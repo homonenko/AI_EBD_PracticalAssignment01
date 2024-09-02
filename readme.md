@@ -2,14 +2,13 @@
 
 ### **_Purpose_**: Practice with writing select queries.
 
-### Basic requirements:
+### Basic requirements (for 5 points):
 
 * Write complex select with joining 5 tables, using _where_ clause, _group by_ and _order by_. 
 * Be able to explain your solution using the correct terminology.
-* **5 points**
 
 
-### Additional points:
+### Additional points (for 2 points):
 
 * Source code published in GitHub or GitLab **+0.5**
 * Union or union all **+0.5**
