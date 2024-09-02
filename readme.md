@@ -1,6 +1,6 @@
 # **Practical Assignment 01**
 
-**_Purpose_**: Practice with writing select queries.
+### **_Purpose_**: Practice with writing select queries.
 
 ### Basic requirements:
 
@@ -12,14 +12,14 @@ Be able to explain your solution using the correct terminology.
 
 ### Additional points:
 
-Source code published in GitLab +0.5
+Source code published in GitHub or GitLab +0.5
 Union or union all +0.5
 CTE + 1
 
 ### Helper
 
 `script.sql` file can help you with syntax. This is simplified example of your assignment.
-_You **can not** use the same tables structure in your assignment._
+_You **can not** use the same tables' structure in your assignment._
 
 ERD:
 ```mermaid
