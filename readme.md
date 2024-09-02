@@ -4,17 +4,16 @@
 
 ### Basic requirements:
 
-Write complex select with joining 5 tables,
-using where clause. 
-Be able to explain your solution using the correct terminology.
-5 points
+* Write complex select with joining 5 tables, using _where_ clause, _group by_ and _order by_. 
+* Be able to explain your solution using the correct terminology.
+* **5 points**
 
 
 ### Additional points:
 
-Source code published in GitHub or GitLab +0.5
-Union or union all +0.5
-CTE + 1
+* Source code published in GitHub or GitLab **+0.5**
+* Union or union all **+0.5**
+* CTE **+1**
 
 ### Helper
 
