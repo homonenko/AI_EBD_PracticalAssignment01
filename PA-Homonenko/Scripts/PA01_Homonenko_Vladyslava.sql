@@ -1,19 +1,17 @@
 
-CREATE DATABASE Gym_hw1;
-
-USE Gym_hw1;
+create database Gym_hw1;
 
 
-CREATE TABLE Members (
-    MemberID INT AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(100),
-    last_name VARCHAR(100),
-    email VARCHAR(100),
-    phone VARCHAR(20)
+create table Members (
+ memberID INT AUTO_INCREMENT PRIMARY KEY,
+ first_name VARCHAR(100),
+ last_name VARCHAR(100),
+  email VARCHAR(100),
+  phone VARCHAR(20)
 );
 
 
-CREATE TABLE Coaches (
+create table Coaches (
     coachID INT AUTO_INCREMENT PRIMARY KEY,
     coach_name VARCHAR(100),
     class_type VARCHAR(100)
@@ -21,10 +19,10 @@ CREATE TABLE Coaches (
 
 
 CREATE TABLE Classes (
-    classID INT AUTO_INCREMENT PRIMARY KEY,
-    class_name VARCHAR(100),
-    class_time TIME,
-    coachID INT,
+ classID INT AUTO_INCREMENT PRIMARY KEY,
+  class_name VARCHAR(100),
+ class_time TIME,
+  coachID INT,
     FOREIGN KEY (coachID) REFERENCES Coaches(coachID)
 );
 
@@ -39,8 +37,8 @@ CREATE TABLE Memberships (
 );
 
 
-CREATE TABLE Gym_Visits (
-    visitID INT AUTO_INCREMENT PRIMARY KEY,
+create table Gym_Visits (
+  visitID INT AUTO_INCREMENT PRIMARY KEY,
     memberID INT,
     visit_date DATE,
     duration DECIMAL(4, 2), 
@@ -48,11 +46,11 @@ CREATE TABLE Gym_Visits (
 );
 
 
-CREATE TABLE Class_Attendances (
-    attendanceID INT AUTO_INCREMENT PRIMARY KEY,
-    visitID INT,
+create table Class_Attendances (
+  attendanceID INT AUTO_INCREMENT PRIMARY KEY,
+  visitID INT,
     classID INT,
-    FOREIGN KEY (visitID) REFERENCES Gym_Visits(visitID),
+  FOREIGN KEY (visitID) REFERENCES Gym_Visits(visitID),
     FOREIGN KEY (classID) REFERENCES Classes(classID)
 );
 
@@ -107,74 +105,38 @@ INSERT INTO Class_Attendances (visitID, classID) VALUES
 (5, 4),  
 (6, 2);  
 
-SELECT 
+
+select 
     m.first_name, 
     m.last_name, 
-    c.class_name, 
-    co.coach_name, 
-    COUNT(gv.visitID) AS total_visits,  
-    AVG(gv.duration) AS avg_duration,   
-    SUM(gv.duration) AS total_hours,    
-    mem.price AS membership_fee         
-FROM 
+    COUNT(gv.visitID) AS total_visits, 
+    SUM(gv.duration) AS total_hours     
+from 
     Members m
-JOIN 
+join 
     Gym_Visits gv ON m.MemberID = gv.memberID
-JOIN 
-    Class_Attendances ca ON gv.visitID = ca.visitID 
-JOIN 
-    Classes c ON ca.classID = c.classID  
-JOIN 
-    Coaches co ON co.coachID = c.coachID
-JOIN 
-    Memberships mem ON mem.memberID = m.memberID
-    AND gv.visit_date BETWEEN mem.start_date AND mem.end_date  
-WHERE 
-    gv.visit_date BETWEEN '2024-01-01' AND '2024-12-31'  
-GROUP BY 
-    m.first_name,
-    m.last_name, 
-    c.class_name, 
-    co.coach_name, 
-    mem.price
-ORDER BY 
-    total_visits DESC,  
-    total_hours DESC;
+where 
+    gv.visit_date between '2024-01-01' and '2024-12-31'
+group by 
+    m.first_name, 
+    m.last_name
    
-
-WITH MostActiveMembers AS (
-    SELECT 
-        m.memberID, 
-        m.first_name, 
-        m.last_name, 
-        SUM(gv.duration) AS total_hours,  
-        COUNT(gv.visitID) AS total_visits 
-    FROM 
-        Members m
-    JOIN 
-        Gym_Visits gv ON m.memberID = gv.memberID
-    GROUP BY 
-        m.memberID, m.first_name, m.last_name
+order by
+    total_hours desc,
+    total_visits desc;
+   
+ with Maxduration as (
+    select 
+        memberID, 
+        MAX(duration) AS max_duration
+    from 
+        Gym_Visits
+    group by
+        memberID
 )
+select 
+    avg(max_duration) as averageMaxDuration
+from 
+    Maxduration;
 
-
-SELECT 
-    mam.first_name, 
-    mam.last_name, 
-    mam.total_visits, 
-    mam.total_hours, 
-    mem.price AS membership_fee,
-    CASE 
-        WHEN mam.total_hours > 3 THEN 'Gold Member' 
-        WHEN mam.total_hours >= 2 THEN 'Silver Member'
-        ELSE 'Bronze Member'
-    END AS membership_level
-FROM 
-    MostActiveMembers mam
-JOIN 
-    Memberships mem ON mam.memberID = mem.memberID
-ORDER BY 
-    mam.total_visits DESC,  
-    mam.total_hours DESC   
-
-
+   
